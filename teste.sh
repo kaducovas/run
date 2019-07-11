@@ -1,6 +1,6 @@
 #!/bin/bash
 
-runTuning.py -d /home/caducovas/run/mc16a.zee.20M.jf17.20M.offline.binned.calo.wdatadrivenlh.npz \
+runTuning.py -d /volume/mc16a.zee.20M.jf17.20M.offline.binned.calo.wdatadrivenlh.npz \
     -x /home/caducovas/run/crossValid_SAE_jackknife.pic \
     --neuronBounds 10 10 \
     --initBounds 0 1 \
