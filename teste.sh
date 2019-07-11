@@ -8,5 +8,5 @@ runTuning.py -d /home/caducovas/run/mc16a.zee.20M.jf17.20M.offline.binned.calo.w
     --et-bins 1 1 \
     --eta-bins 1 1 \
     --output-level DEBUG \
-    --operation Offline_LH_VeryLoose --core keras  \
-    --ppFile /home/caducovas/run/ppFile_preproc.pic
+    --operation Offline_LH_VeryLoose  \
+    --ppFile /home/caducovas/run/ppFile_preproc.pic \
