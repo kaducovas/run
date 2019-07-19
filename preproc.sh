@@ -7,7 +7,8 @@ createTuningJobFiles.py all \
               -outPP ppFile_preproc \
               -pp_nEt 4 \
               -pp_nEta 9 \
-              -ppCol "[Norm1()]" #,PCA({'energy' : 30})]"
+              -ppCol "[Norm1(), StackedAutoEncoder({'hidden_neurons' : [60], 'aetype' : 'contractive'})]" 
+	      #,PCA({'energy' : 30})]"
               #StackedAutoEncoder({'hidden_neurons' : [60], 'aetype' : 'contractive'})]"
               #PCA({'energy' : 66})]"
               #,NLPCA(level = self.level, nlpcs=47, nmapping=71)] ))
