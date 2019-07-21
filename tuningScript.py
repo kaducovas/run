@@ -15,13 +15,27 @@ import os
 import traceback
 import datetime as dt
 from urllib3.exceptions import MaxRetryError
-
+import sys
+from datetime import datetime, timedelta
 from sqlalchemy import create_engine
+
+
 engine = create_engine('postgresql://ringer:2019_constantedeplanck@201.17.19.173:80/ringerdb')
 conn = engine.connect()
 rs = conn.execute("update tasks set status='running' where id in ( select id from tasks where status='queued' order by id asc limit 1 for update ) returning id;")
+
+
+jobid=None
+
 for row in rs:
     jobid = row[0]
+
+if jobid is None:
+    print 'No tasks in the queue!'
+    sys.exit(0)
+
+hostname = os.environ['HOST']
+conn.execute("update tasks set owner = '"+hostname+"' where id = "+str(jobid))
 
 rs = conn.execute("select * from tasks where id = "+str(jobid))
 for row in rs:
@@ -29,8 +43,10 @@ for row in rs:
 
 basepath='/home/caducovas/run/'
 
+
 print fields
 
+time=fields[3]
 et= fields[8]
 eta= fields[9]
 preproc= fields[10]
@@ -39,7 +55,7 @@ opPoint= fields[12]
 fineTuning= fields[14]
 
 print preproc
-
+print time
 conf= fields[11]
 
 confFilename = basepath+str(uuid.uuid4())+'.pic'
@@ -49,7 +65,7 @@ with open(confFilename, 'wb') as handle:
 
 start = timer()
 
-DatasetLocationInput = basepath+'/mc16a.zee.20M.jf17.20M.offline.binned.calo.wdatadrivenlh.npz'
+DatasetLocationInput = basepath+'mc16a.zee.20M.jf17.20M.offline.binned.calo.wdatadrivenlh.npz'
 
 #try:
 #from Gaugi.Logger import Logger, LoggingLevel
@@ -84,6 +100,7 @@ try:
                #maxFail = 100,
                #seed = 0,
                ppCol = PreProcChain( [Norm1()] ) ,
+               scheduleTime = time,
                crossValidSeed = 66 )
                #level = LoggingLevel.DEBUG )
 
@@ -98,10 +115,10 @@ try:
 
     conn.execute("update tasks set elapsed = %s where id = "+str(jobid), (dt.timedelta(seconds=(end - start))))
     conn.execute("update tasks set status = 'finished' where id = "+str(jobid))
-
+    conn.execute("update tasks set endtime = %s where id = "+str(jobid), (datetime.now() - timedelta(hours=3)))
     print 'execution time is: ', (end - start)
 
-except MaxRetryError as e:
+except Exception as e:
     conn.execute("update tasks set status = 'queued' where id = "+str(jobid))
     os.remove(confFilename)
     print("type error: " + str(e))
