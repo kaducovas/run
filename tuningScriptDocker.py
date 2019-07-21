@@ -34,6 +34,7 @@ if jobid is None:
     print 'No tasks in the queue!'
     sys.exit(0)
 
+hostname = os.environ['HOST']
 conn.execute("update tasks set owner = '"+hostname+"' where id = "+str(jobid))
 
 rs = conn.execute("select * from tasks where id = "+str(jobid))
@@ -42,7 +43,6 @@ for row in rs:
 
 basepath='/home/caducovas/run/'
 
-hostname = os.environ['HOST']
 
 print fields
 
