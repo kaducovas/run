@@ -16,11 +16,17 @@ import traceback
 import datetime as dt
 from urllib3.exceptions import MaxRetryError
 import sys
+from datetime import datetime
 from sqlalchemy import create_engine
+
+
 engine = create_engine('postgresql://ringer:2019_constantedeplanck@201.17.19.173:80/ringerdb')
 conn = engine.connect()
 rs = conn.execute("update tasks set status='running' where id in ( select id from tasks where status='queued' order by id asc limit 1 for update ) returning id;")
+
+
 jobid=None
+
 for row in rs:
     jobid = row[0]
 
@@ -108,6 +114,7 @@ try:
     conn.execute("update tasks set elapsed = %s where id = "+str(jobid), (dt.timedelta(seconds=(end - start))))
     conn.execute("update tasks set status = 'finished' where id = "+str(jobid))
     conn.execute("update tasks set owner = '"+hostname+"' where id = "+str(jobid))
+    conn.execute("update tasks set endtime = %s where id = "+str(jobid), (datetime.now()))
     print 'execution time is: ', (end - start)
 
 except Exception as e:
