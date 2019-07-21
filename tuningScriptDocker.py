@@ -33,6 +33,7 @@ hostname = os.environ['HOST']
 
 print fields
 
+time=fields[3]
 et= fields[8]
 eta= fields[9]
 preproc= fields[10]
@@ -86,6 +87,7 @@ try:
                #maxFail = 100,
                #seed = 0,
                ppCol = PreProcChain( [Norm1()] ) ,
+               scheduleTime = time,
                crossValidSeed = 66 )
                #level = LoggingLevel.DEBUG )
 
