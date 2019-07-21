@@ -51,7 +51,7 @@ with open(confFilename, 'wb') as handle:
 
 start = timer()
 
-DatasetLocationInput = basepath+'/mc16a.zee.20M.jf17.20M.offline.binned.calo.wdatadrivenlh.npz'
+DatasetLocationInput = /volume/mc16a.zee.20M.jf17.20M.offline.binned.calo.wdatadrivenlh.npz'
 
 #try:
 #from Gaugi.Logger import Logger, LoggingLevel
