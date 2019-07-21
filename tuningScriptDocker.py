@@ -42,7 +42,7 @@ opPoint= fields[12]
 fineTuning= fields[14]
 
 print preproc
-
+print time
 conf= fields[11]
 
 confFilename = basepath+str(uuid.uuid4())+'.pic'
