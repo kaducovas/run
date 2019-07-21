@@ -16,7 +16,7 @@ import traceback
 import datetime as dt
 from urllib3.exceptions import MaxRetryError
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from sqlalchemy import create_engine
 
 
@@ -33,6 +33,8 @@ for row in rs:
 if jobid is None:
     print 'No tasks in the queue!'
     sys.exit(0)
+
+conn.execute("update tasks set owner = '"+hostname+"' where id = "+str(jobid))
 
 rs = conn.execute("select * from tasks where id = "+str(jobid))
 for row in rs:
@@ -113,8 +115,7 @@ try:
 
     conn.execute("update tasks set elapsed = %s where id = "+str(jobid), (dt.timedelta(seconds=(end - start))))
     conn.execute("update tasks set status = 'finished' where id = "+str(jobid))
-    conn.execute("update tasks set owner = '"+hostname+"' where id = "+str(jobid))
-    conn.execute("update tasks set endtime = %s where id = "+str(jobid), (datetime.now()))
+    conn.execute("update tasks set endtime = %s where id = "+str(jobid), (datetime.now() - timedelta(hours=3)))
     print 'execution time is: ', (end - start)
 
 except Exception as e:
