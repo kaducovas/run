@@ -15,13 +15,18 @@ import os
 import traceback
 import datetime as dt
 from urllib3.exceptions import MaxRetryError
-
+import sys
 from sqlalchemy import create_engine
 engine = create_engine('postgresql://ringer:2019_constantedeplanck@201.17.19.173:80/ringerdb')
 conn = engine.connect()
 rs = conn.execute("update tasks set status='running' where id in ( select id from tasks where status='queued' order by id asc limit 1 for update ) returning id;")
+jobid=None
 for row in rs:
     jobid = row[0]
+
+if jobid is None:
+    print 'No tasks in the queue!'
+    sys.exit(0)
 
 rs = conn.execute("select * from tasks where id = "+str(jobid))
 for row in rs:
