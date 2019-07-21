@@ -52,7 +52,7 @@ with open(confFilename, 'wb') as handle:
 
 start = timer()
 
-DatasetLocationInput = '/volume/mc16a.zee.20M.jf17.20M.offline.binned.calo.wdatadrivenlh.npz'
+DatasetLocationInput = basepath+'/mc16a.zee.20M.jf17.20M.offline.binned.calo.wdatadrivenlh.npz'
 
 #try:
 #from Gaugi.Logger import Logger, LoggingLevel
@@ -102,9 +102,10 @@ try:
 
     conn.execute("update tasks set elapsed = %s where id = "+str(jobid), (dt.timedelta(seconds=(end - start))))
     conn.execute("update tasks set status = 'finished' where id = "+str(jobid))
+    conn.execute("update tasks set owner = '"+hostname+"' where id = "+str(jobid))
     print 'execution time is: ', (end - start)
 
-except MaxRetryError as e:
+except Exception as e:
     conn.execute("update tasks set status = 'queued' where id = "+str(jobid))
     os.remove(confFilename)
     print("type error: " + str(e))
