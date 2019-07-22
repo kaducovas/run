@@ -125,7 +125,7 @@ try:
     print 'execution time is: ', (end - start)
 
 
-except MaxRetryErroras e:
+except MaxRetryError as e:
     conn.execute("update tasks set status = 'queued' where id = "+str(jobid))
     os.remove(confFilename)
     print("type error: " + str(e))
