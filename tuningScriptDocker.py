@@ -79,6 +79,12 @@ try:
     tuningJob = TuningJob()
 
     from TuningTools.PreProc import *
+    import ast
+
+    preprocList=[]
+    preprocStringList = ast.literal_eval(preproc)
+    for string in preprocStringList:
+        preprocList.append(eval(string))
 
 
     tuningJob( DatasetLocationInput,
@@ -99,7 +105,7 @@ try:
                #doPerf = True,
                #maxFail = 100,
                #seed = 0,
-               ppCol = PreProcChain( [Norm1()] ) ,
+               ppCol = PreProcChain( preprocList ) ,
                scheduleTime = time,
                crossValidSeed = 66 )
                #level = LoggingLevel.DEBUG )
@@ -118,8 +124,11 @@ try:
     conn.execute("update tasks set endtime = %s where id = "+str(jobid), (datetime.now() - timedelta(hours=3)))
     print 'execution time is: ', (end - start)
 
+
 except Exception as e:
     conn.execute("update tasks set status = 'queued' where id = "+str(jobid))
     os.remove(confFilename)
     print("type error: " + str(e))
     print(traceback.format_exc())
+
+conn.close()
