@@ -48,6 +48,7 @@ basepath='/home/caducovas/run/'
 print fields
 
 time=fields[3]
+sort=fields[7]
 et= fields[8]
 eta= fields[9]
 preproc= fields[10]
@@ -128,12 +129,15 @@ try:
     print 'execution time is: ', (end - start)
 
 
-except MaxRetryError as e:
+except Exception as e:
+    engine = create_engine('postgresql://ringer:2019_constantedeplanck@201.17.19.173:80/ringerdb')
     conn = engine.connect()
     conn.execute("update tasks set status = 'queued' where id = "+str(jobid))
-    os.remove(confFilename)
-    print("type error: " + str(e))
-    print(traceback.format_exc())
+    conn.execute("delete from classifiers where time = '"+str(time)+"' and sort = "+str(sort))
+    conn.execute("delete from reconstruction_metrics where time = '"+str(time)+"' and sort = "+str(sort))
+    #os.remove(confFilename)
+    print "type error: " + str(e)
+    print traceback.format_exc()
 
 conn.close()
 engine.dispose()
