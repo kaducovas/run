@@ -120,6 +120,7 @@ try:
 
 
     #conn = engine.connect()
+    print 'Testandooo'
     #conn.execute("update tasks set elapsed = %s where id = "+str(jobid), (dt.timedelta(seconds=(end - start))))
     #conn.execute("update tasks set status = 'finished' where id = "+str(jobid))
     #conn.execute("update tasks set endtime = %s where id = "+str(jobid), (datetime.now() - timedelta(hours=3)))
