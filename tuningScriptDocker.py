@@ -136,4 +136,4 @@ except MaxRetryError as e:
     print(traceback.format_exc())
 
 conn.close()
-engine
+engine.dispose()
