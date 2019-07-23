@@ -41,6 +41,7 @@ rs = conn.execute("select * from tasks where id = "+str(jobid))
 for row in rs:
     fields = row
 
+conn.close()
 basepath='/home/caducovas/run/'
 
 
@@ -118,7 +119,7 @@ try:
 
 
 
-
+    conn = engine.connect()
     conn.execute("update tasks set elapsed = %s where id = "+str(jobid), (dt.timedelta(seconds=(end - start))))
     conn.execute("update tasks set status = 'finished' where id = "+str(jobid))
     conn.execute("update tasks set endtime = %s where id = "+str(jobid), (datetime.now() - timedelta(hours=3)))
@@ -126,6 +127,7 @@ try:
 
 
 except MaxRetryError as e:
+    conn = engine.connect()
     conn.execute("update tasks set status = 'queued' where id = "+str(jobid))
     os.remove(confFilename)
     print("type error: " + str(e))
