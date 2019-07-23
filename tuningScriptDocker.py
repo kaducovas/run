@@ -24,7 +24,6 @@ engine = create_engine('postgresql://ringer:2019_constantedeplanck@201.17.19.173
 conn = engine.connect()
 rs = conn.execute("update tasks set status='running' where id in ( select id from tasks where status='queued' order by id asc limit 1 for update ) returning id;")
 
-
 jobid=None
 
 for row in rs:
@@ -42,6 +41,7 @@ for row in rs:
     fields = row
 
 conn.close()
+engine.dispose()
 basepath='/home/caducovas/run/'
 
 
@@ -136,3 +136,4 @@ except MaxRetryError as e:
     print(traceback.format_exc())
 
 conn.close()
+engine
