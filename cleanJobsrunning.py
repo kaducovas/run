@@ -18,7 +18,7 @@ from sqlalchemy import create_engine
 engine = create_engine('postgresql://ringer:2019_constantedeplanck@201.17.19.173:80/ringerdb')
 conn = engine.connect()
 
-rs = conn.execute("select * from tasks where id > 3402 and endtime is null")
+rs = conn.execute("select * from tasks where endtime is null")
 for row in rs:
     fields = row
 

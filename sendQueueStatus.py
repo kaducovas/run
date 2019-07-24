@@ -16,7 +16,7 @@ conn = engine.connect()
 x = PrettyTable()
 x.field_names = ["Status", "nJobs"]
 
-rs = conn.execute("select status,count(*) from tasks group by status")
+rs = conn.execute("select status,count(*) from tasks where context = 'official' group by status")
 for r in rs:
      x.add_row([r[0],str(r[1])])
 

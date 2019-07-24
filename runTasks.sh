@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #queuedTasks=$(psql -h 201.17.19.173 -p 80 -d ringerdb -U ringer -c "select count(*) from tasks where status = 'queued';" | grep row | cut -d " " -f 1 | cut -d "(" -f 2)
-queuedTasks=$(expr $(psql -h 201.17.19.173 -p 80 -d ringerdb -U ringer -c "select count(*) from tasks where status = 'queued';"  | sed -n 3p ))
+queuedTasks=$(expr $(psql -h 201.17.19.173 -p 80 -d ringerdb -U ringer -c "select count(*) from tasks where status = 'queued' and context = 'official';"  | sed -n 3p ))
 maxtasks=5
 #queuedTasks=11
 

@@ -23,7 +23,7 @@ print 'Connecting to the database...'
 engine = create_engine('postgresql://ringer:2019_constantedeplanck@201.17.19.173:80/ringerdb')
 conn = engine.connect()
 print 'Database connected'
-rs = conn.execute("update tasks set status='running' where id in ( select id from tasks where status='queued' and context = 'official' order by id asc limit 1 for update ) returning id;")
+rs = conn.execute("update tasks set status='running' where id in ( select id from tasks where status='queued' and context = 'teste' order by id asc limit 1 for update ) returning id;")
 
 jobid=None
 
