@@ -10,8 +10,11 @@ if [ $queuedTasks -gt 0 ]
  expr $queuedTasks
  avail=$(expr $maxtasks - $(docker ps | grep saphyra:2.2 | wc -l))
  echo $avail
- jobs=$(( $avail < $queuedTasks ? $avail : $queuedTasks ))
- echo $jobs
- #mpirun -n $jobs echo 'olar'
- mpirun -n $jobs docker run -v /home/caducovas/Development/volume:/volume -e HOST=$(uname -a | cut -d " " -f 2) -d --rm caducovas/saphyra:2.2
+ if [ $avail -gt 0 ]
+  then
+  jobs=$(( $avail < $queuedTasks ? $avail : $queuedTasks ))
+  echo $jobs
+  #mpirun -n $jobs echo 'olar'
+  mpirun -n $jobs docker run -v /home/caducovas/Development/volume:/volume -e HOST=$(uname -a | cut -d " " -f 2) -d --rm caducovas/saphyra:2.2
+ fi
 fi

@@ -19,9 +19,10 @@ import sys
 from datetime import datetime, timedelta
 from sqlalchemy import create_engine
 
-
+print 'Connecting to the database...'
 engine = create_engine('postgresql://ringer:2019_constantedeplanck@201.17.19.173:80/ringerdb')
 conn = engine.connect()
+print 'Database connected'
 rs = conn.execute("update tasks set status='running' where id in ( select id from tasks where status='queued' order by id asc limit 1 for update ) returning id;")
 
 jobid=None
@@ -55,6 +56,7 @@ preproc= fields[10]
 conf= fields[11]
 opPoint= fields[12]
 fineTuning= fields[14]
+attempts= fields[19]
 
 print preproc
 print time
@@ -132,7 +134,11 @@ try:
 except Exception as e:
     engine = create_engine('postgresql://ringer:2019_constantedeplanck@201.17.19.173:80/ringerdb')
     conn = engine.connect()
-    conn.execute("update tasks set status = 'queued' where id = "+str(jobid))
+    if attempts > 5:
+        conn.execute("update tasks set status = 'holded' where id = "+str(jobid))
+    else:
+        conn.execute("update tasks set status = 'queued' where id = "+str(jobid))
+        conn.execute("update tasks set attempts = "+str(attempts+1)+" where id = "+str(jobid))
     conn.execute("delete from classifiers where time = '"+str(time)+"' and sort = "+str(sort))
     conn.execute("delete from reconstruction_metrics where time = '"+str(time)+"' and sort = "+str(sort))
     #os.remove(confFilename)
