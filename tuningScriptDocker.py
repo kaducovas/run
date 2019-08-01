@@ -20,7 +20,7 @@ from datetime import datetime, timedelta
 from sqlalchemy import create_engine
 
 print 'Connecting to the database...'
-engine = create_engine('postgresql://ringer:2019_constantedeplanck@201.17.19.173:80/ringerdb')
+engine = create_engine('postgresql://ringer:2019_constantedeplanck@201.17.19.173:6432/ringerdb')
 conn = engine.connect()
 print 'Database connected'
 rs = conn.execute("update tasks set status='running' where id in ( select id from tasks where status='queued' and context = 'official' order by id asc limit 1 for update ) returning id;")
@@ -58,6 +58,7 @@ conf= fields[11]
 opPoint= fields[12]
 fineTuning= fields[14]
 attempts= fields[19]
+dataset= fields[21]
 
 print preproc
 print time
@@ -70,7 +71,7 @@ with open(confFilename, 'wb') as handle:
 
 start = timer()
 
-DatasetLocationInput = '/volume/mc16a.zee.20M.jf17.20M.offline.binned.calo.wdatadrivenlh.npz'
+DatasetLocationInput = '/volume/'+dataset #mc16a.zee.20M.jf17.20M.offline.binned.calo.wdatadrivenlh.npz'
 
 #try:
 #from Gaugi.Logger import Logger, LoggingLevel

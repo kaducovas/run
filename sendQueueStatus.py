@@ -11,7 +11,7 @@ import telepot
 
 bot = telepot.Bot('578139897:AAEJBs9F21TojbPoXM8SIJtHrckaBLZWkpo')
 
-engine = create_engine('postgresql://ringer:2019_constantedeplanck@201.17.19.173:80/ringerdb')
+engine = create_engine('postgresql://ringer:2019_constantedeplanck@201.17.19.173:6432/ringerdb')
 conn = engine.connect()
 x = PrettyTable()
 x.field_names = ["Status", "nJobs"]
