@@ -15,6 +15,6 @@ if [ $queuedTasks -gt 0 ]
   jobs=$(( $avail < $queuedTasks ? $avail : $queuedTasks ))
   echo $jobs
   #mpirun -n $jobs echo 'olar'
-  mpirun -n $jobs docker run -v /home/caducovas/Development/volume:/volume -e HOST=$(uname -a | cut -d " " -f 2) -d --rm caducovas/saphyra:2.2
+  mpirun -n $jobs docker run -v /home/caducovas/Development/volume:/volume -e HOST=$(uname -a | cut -d " " -f 2) -d --rm caducovas/saphyra:2.3
  fi
 fi

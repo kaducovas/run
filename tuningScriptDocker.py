@@ -17,6 +17,7 @@ import datetime as dt
 from urllib3.exceptions import MaxRetryError
 import sys
 from datetime import datetime, timedelta
+import pytz
 from sqlalchemy import create_engine
 
 print 'Connecting to the database...'
@@ -130,7 +131,7 @@ try:
     print 'EXECUTA'
     conn.execute("update tasks set elapsed = %s where id = "+str(jobid), (dt.timedelta(seconds=(end - start))))
     conn.execute("update tasks set status = 'finished' where id = "+str(jobid))
-    conn.execute("update tasks set endtime = %s where id = "+str(jobid), (datetime.now() - timedelta(hours=3)))
+    conn.execute("update tasks set endtime = %s where id = "+str(jobid), (datetime.now(pytz.utc) - timedelta(hours=3)))
     print 'execution time is: ', (end - start)
 
 
