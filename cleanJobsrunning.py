@@ -18,7 +18,7 @@ from sqlalchemy import create_engine
 engine = create_engine('postgresql://ringer:2019_constantedeplanck@201.17.19.173:6432/ringerdb')
 conn = engine.connect()
 
-rs = conn.execute("select * from tasks where endtime is null")
+rs = conn.execute("select * from tasks where endtime is null and status <> 'holded'")
 for row in rs:
     fields = row
 

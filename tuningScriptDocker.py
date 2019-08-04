@@ -125,7 +125,7 @@ try:
     os.remove(confFilename)
 
     print 'CRIA ENGINE'
-    engine = create_engine('postgresql://ringer:2019_constantedeplanck@201.17.19.173:80/ringerdb')
+    engine = create_engine('postgresql://ringer:2019_constantedeplanck@201.17.19.173:6432/ringerdb')
     print 'CONECTA'
     conn = engine.connect()
     print 'EXECUTA'
@@ -136,7 +136,7 @@ try:
 
 
 except Exception as e:
-    engine = create_engine('postgresql://ringer:2019_constantedeplanck@201.17.19.173:80/ringerdb')
+    engine = create_engine('postgresql://ringer:2019_constantedeplanck@201.17.19.173:6432/ringerdb')
     conn = engine.connect()
     if attempts > 5:
         conn.execute("update tasks set status = 'holded' where id = "+str(jobid))
