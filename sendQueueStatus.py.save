@@ -13,8 +13,6 @@ bot = telepot.Bot('578139897:AAEJBs9F21TojbPoXM8SIJtHrckaBLZWkpo')
 
 engine = create_engine('postgresql://ringer:2019_constantedeplanck@201.17.19.173:6432/ringerdb')
 conn = engine.connect()
-
-###################status
 x = PrettyTable()
 x.field_names = ["Status", "nJobs"]
 
@@ -28,11 +26,9 @@ for r in rs:
 
 lastEndTime = fields[0]
 
-bot.sendMessage('@ringer_tuning','Last Job was finished at '+str(lastEndTime)+'\n'+x.get_string())
-
-#################owner
-
 rs = conn.execute("select owner,count(*) from tasks where endtime > (current_date - interval '2 days') and status = 'finished' group by owner order by count(*) desc")
+
+bot.sendMessage('@ringer_tuning','Last Job was finished at '+str(lastEndTime)+'\n'+x.get_string())
 
 x = PrettyTable()
 x.field_names = ["owner", "nJobs"]
@@ -42,18 +38,17 @@ for r in rs:
 
 bot.sendMessage('@ringer_tuning',x.get_string())
 
-###############sincelasttime
+rs = conn.execute("")
 
-
-rs = conn.execute("select owner, (now() - max(endtime)) sincelasttime from tasks where status = 'finished' group by owner order by (now() - max(endtime))")
+bot.sendMessage('@ringer_tuning','Last Job was finished at '+str(lastEndTime)+'\n'+x.get_string())
 
 x = PrettyTable()
-x.field_names = ["owner", "sinceLastTime"]
+x.field_names = ["owner", "nJobs"]
 
 for r in rs:
      x.add_row([r[0],str(r[1])])
 
-bot.sendMessage('@ringer_tuning',x.get_string())
+bot.sendMessage('@ringer_tuning',x.get_string()
 
 conn.close()
 engine.dispose()
